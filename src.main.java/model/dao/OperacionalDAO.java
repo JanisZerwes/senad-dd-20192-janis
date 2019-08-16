@@ -144,4 +144,27 @@ public class OperacionalDAO implements BaseDAO<Operacional> {
 		return operacional;
 	}
 
+	public ArrayList<Operacional> consultarTodosPorIdGerente(int idgerente) {
+		Connection conn = Banco.getConnection();
+		String sql = " SELECT Nome, cpf, sexo, idade, salBruto, idgerente " + " FROM OPERACIONAL WHERE IDGERENTE = "
+				+ idgerente;
+
+		Statement stmt = Banco.getStatement(conn);
+		ArrayList<Operacional> operacionais = new ArrayList<Operacional>();
+		try {
+			ResultSet resultadoDaConsulta = stmt.executeQuery(sql);
+
+			while (resultadoDaConsulta.next()) {
+				Operacional operacional = construirOperacionalDoResultSet(resultadoDaConsulta);
+				operacionais.add(operacional);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("Erro ao consultar todos id por gerente");
+			System.out.println("Erro: " + e.getMessage());
+		}
+
+		return operacionais;
+	}
+
 }

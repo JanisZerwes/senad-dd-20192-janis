@@ -1,5 +1,8 @@
 package view;
 
+import java.util.ArrayList;
+
+import model.dao.OperacionalDAO;
 import model.entity.Diretor;
 import model.entity.Gerente;
 import model.entity.Operacional;
@@ -27,13 +30,15 @@ public class Executavel {
 		System.out.println(ger1);
 
 		Gerente ger2 = new Gerente();
-		ger2 = metodoGerenciaSubordinado();
+		ger2 = metodoGerenciarSubordinado(ger2);
 	}
 
-	private static Gerente metodoGerenciaSubordinado() {
-		Gerente novoGerenteSubordinado = new novoGerenteSubordinado();
-		novoGerenteSubordinado.ge
-		return null;
+	private static Gerente metodoGerenciarSubordinado(Gerente gerente) {
+		OperacionalDAO operacionaldao = new OperacionalDAO();
+		ArrayList<Operacional> subordinadosDoGerente = new ArrayList<Operacional>();
+		subordinadosDoGerente = operacionaldao.consultarTodosPorIdGerente(gerente.getId());
+		gerente.setOperacionais(subordinadosDoGerente);
+		return gerente;
 	}
 
 	private static Gerente metodoGerente() {
