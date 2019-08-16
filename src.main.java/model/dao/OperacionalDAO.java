@@ -13,7 +13,7 @@ public class OperacionalDAO implements BaseDAO<Operacional> {
 
 	public Operacional salvar(Operacional novoOperacional) {
 		Connection conn = Banco.getConnection();
-		String sql = "INSERT INTO OPERACIONAL (nome, cpf, sexo, idade, salBruto, id ) " + " VALUES (?,?,?,?,?)";
+		String sql = "INSERT INTO OPERACIONAL (nome, cpf, sexo, idade, salBruto, idgerente ) " + " VALUES (?,?,?,?,?)";
 		PreparedStatement stmt = Banco.getPreparedStatement(conn, sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
 		try {
@@ -22,10 +22,9 @@ public class OperacionalDAO implements BaseDAO<Operacional> {
 			stmt.setString(3, novoOperacional.getSexo());
 			stmt.setInt(4, novoOperacional.getIdade());
 			stmt.setDouble(5, novoOperacional.getSalBruto());
-			stmt.setInt(6, novoOperacional.getId());
+			stmt.setInt(6, novoOperacional.getIdGerente());
 
 			stmt.execute();
-
 			ResultSet generatedKeys = stmt.getGeneratedKeys();
 
 		} catch (SQLException e) {
@@ -38,14 +37,14 @@ public class OperacionalDAO implements BaseDAO<Operacional> {
 
 	public boolean excluir(int id) {
 		Connection conn = Banco.getConnection();
-		String sql = "DELETE FROM ENDERECO WHERE ID=" + id;
+		String sql = "DELETE FROM OPERACIONAL WHERE ID=" + id;
 		Statement stmt = Banco.getStatement(conn);
 
 		int quantidadeLinhasAfetadas = 0;
 		try {
 			quantidadeLinhasAfetadas = stmt.executeUpdate(sql);
 		} catch (SQLException e) {
-			System.out.println("Erro ao excluir endereco.");
+			System.out.println("Erro ao excluir funcionário operacional.");
 			System.out.println("Erro: " + e.getMessage());
 		}
 
@@ -57,7 +56,8 @@ public class OperacionalDAO implements BaseDAO<Operacional> {
 		// (int id, String rua, String cep, String estado, String cidade, String numero,
 		// String bairro) {
 
-		String sql = " UPDATE OPERACIONAL " + " SET nome=?, cpf=?, sexo=?, idade=?, salBruto=?, id=?" + " WHERE ID=? ";
+		String sql = " UPDATE OPERACIONAL " + " SET nome=?, cpf=?, sexo=?, idade=?, salBruto=?, idgerente=?"
+				+ " WHERE ID=? ";
 
 		PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);
 		int quantidadeLinhasAfetadas = 0;
@@ -68,7 +68,7 @@ public class OperacionalDAO implements BaseDAO<Operacional> {
 			stmt.setString(3, operacional.getSexo());
 			stmt.setInt(4, operacional.getIdade());
 			stmt.setDouble(5, operacional.getSalBruto());
-			stmt.setInt(5, operacional.getId());
+			stmt.setInt(5, operacional.getIdGerente());
 
 			quantidadeLinhasAfetadas = stmt.executeUpdate();
 		} catch (SQLException e) {
@@ -81,7 +81,7 @@ public class OperacionalDAO implements BaseDAO<Operacional> {
 
 	public Operacional consultarPorId(int id) {
 		Connection conn = Banco.getConnection();
-		String sql = " SELECT  Nome, Cpf, Sexo, Idade, salBruto,id " + " FROM OPERACIONAL " + " WHERE ID=" + id;
+		String sql = " SELECT  Nome, Cpf, Sexo, Idade, salBruto,idgerente " + " FROM OPERACIONAL " + " WHERE ID=" + id;
 
 		Statement stmt = Banco.getStatement(conn);
 
@@ -104,7 +104,7 @@ public class OperacionalDAO implements BaseDAO<Operacional> {
 
 	public ArrayList<Operacional> consultarTodos() {
 		Connection conn = Banco.getConnection();
-		String sql = " SELECT Nome, cpf, sexo, idade, salBruto, id " + " FROM OPERACIONAL ";
+		String sql = " SELECT Nome, cpf, sexo, idade, salBruto, idgerente " + " FROM OPERACIONAL ";
 
 		Statement stmt = Banco.getStatement(conn);
 		ArrayList<Operacional> operacionais = new ArrayList<Operacional>();
@@ -117,7 +117,7 @@ public class OperacionalDAO implements BaseDAO<Operacional> {
 			}
 
 		} catch (SQLException e) {
-			System.out.println("Erro ao consultar endereco");
+			System.out.println("Erro ao consultar funcionário operacional");
 			System.out.println("Erro: " + e.getMessage());
 		}
 
@@ -134,7 +134,7 @@ public class OperacionalDAO implements BaseDAO<Operacional> {
 			operacional.setSexo(resultadoDaConsulta.getString("Sexo"));
 			operacional.setIdade(resultadoDaConsulta.getInt("Idade"));
 			operacional.setSalBruto(resultadoDaConsulta.getDouble("salBruto"));
-			operacional.setId(resultadoDaConsulta.getInt("Id"));
+			operacional.setIdGerente(resultadoDaConsulta.getInt("Idgerente"));
 
 		} catch (SQLException e) {
 			System.out.println("Erro ao construir operacional a partir do ResultSet");

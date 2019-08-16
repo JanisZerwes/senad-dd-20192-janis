@@ -7,14 +7,14 @@ public class Diretor extends Empregados {
 	private String nomeDiretoria;
 	private String sigla;
 
-	private ArrayList<Diretor> diretor;
+	private ArrayList<Gerente> gerente;
 
-	public ArrayList<Diretor> getDiretor() {
-		return diretor;
+	public ArrayList<Gerente> getGerente() {
+		return gerente;
 	}
 
-	public void setDiretor(ArrayList<Diretor> diretor) {
-		this.diretor = diretor;
+	public void setGerente(ArrayList<Gerente> gerente) {
+		this.gerente = gerente;
 	}
 
 	public double getComissao() {

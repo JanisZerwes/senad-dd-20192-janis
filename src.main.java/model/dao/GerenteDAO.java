@@ -13,7 +13,8 @@ public class GerenteDAO implements BaseDAO<Gerente> {
 
 	public Gerente salvar(Gerente novoGerente) {
 		Connection conn = Banco.getConnection();
-		String sql = "INSERT INTO OPERACIONAL (nome, cpf, sexo, idade, salBruto, Id ) " + " VALUES (?,?,?,?,?,?)";
+		String sql = "INSERT INTO OPERACIONAL (nome, cpf, sexo, idade, salBruto, Iddiretor ) "
+				+ " VALUES (?,?,?,?,?,?)";
 		PreparedStatement stmt = Banco.getPreparedStatement(conn, sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
 		try {
@@ -22,7 +23,7 @@ public class GerenteDAO implements BaseDAO<Gerente> {
 			stmt.setString(3, novoGerente.getSexo());
 			stmt.setInt(4, novoGerente.getIdade());
 			stmt.setDouble(5, novoGerente.getSalBruto());
-			stmt.setInt(6, novoGerente.getId());
+			stmt.setInt(6, novoGerente.getIdDiretoria());
 			stmt.execute();
 
 			ResultSet generatedKeys = stmt.getGeneratedKeys();
@@ -56,7 +57,8 @@ public class GerenteDAO implements BaseDAO<Gerente> {
 		// (int id, String rua, String cep, String estado, String cidade, String numero,
 		// String bairro) {
 
-		String sql = " UPDATE GERENTE " + " SET nome=?, cpf=?, sexo=?, idade=?, salBruto=?, id=?" + " WHERE ID=? ";
+		String sql = " UPDATE GERENTE " + " SET nome=?, cpf=?, sexo=?, idade=?, salBruto=?, iddiretor=?"
+				+ " WHERE ID=? ";
 
 		PreparedStatement stmt = Banco.getPreparedStatement(conn, sql);
 		int quantidadeLinhasAfetadas = 0;
@@ -67,7 +69,7 @@ public class GerenteDAO implements BaseDAO<Gerente> {
 			stmt.setString(3, gerente.getSexo());
 			stmt.setInt(4, gerente.getIdade());
 			stmt.setDouble(5, gerente.getSalBruto());
-			stmt.setDouble(6, gerente.getSalBruto());
+			stmt.setInt(6, gerente.getIdDiretoria());
 
 			quantidadeLinhasAfetadas = stmt.executeUpdate();
 		} catch (SQLException e) {
@@ -80,7 +82,7 @@ public class GerenteDAO implements BaseDAO<Gerente> {
 
 	public Gerente consultarPorId(int id) {
 		Connection conn = Banco.getConnection();
-		String sql = " SELECT  Nome, Cpf, Sexo, Idade, salBruto,id " + " FROM GERENTE " + " WHERE ID=" + id;
+		String sql = " SELECT  Nome, Cpf, Sexo, Idade, salBruto,iddiretor " + " FROM GERENTE " + " WHERE ID=" + id;
 
 		Statement stmt = Banco.getStatement(conn);
 
@@ -110,7 +112,7 @@ public class GerenteDAO implements BaseDAO<Gerente> {
 			gerente.setSexo(resultadoDaConsulta.getString("Sexo"));
 			gerente.setIdade(resultadoDaConsulta.getInt("Idade"));
 			gerente.setSalBruto(resultadoDaConsulta.getDouble("salBruto"));
-			gerente.setId(resultadoDaConsulta.getInt("Id"));
+			gerente.setIdDiretoria(resultadoDaConsulta.getInt("IdDiretor"));
 
 		} catch (SQLException e) {
 			System.out.println("Erro ao construir gerente a partir do ResultSet");
@@ -122,7 +124,7 @@ public class GerenteDAO implements BaseDAO<Gerente> {
 
 	public ArrayList<Gerente> consultarTodos() {
 		Connection conn = Banco.getConnection();
-		String sql = " SELECT Nome, cpf, sexo, idade, salBruto, id " + " FROM GERENTE ";
+		String sql = " SELECT Nome, cpf, sexo, idade, salBruto, iddiretor " + " FROM GERENTE ";
 
 		Statement stmt = Banco.getStatement(conn);
 		ArrayList<Gerente> gerentes = new ArrayList<Gerente>();
